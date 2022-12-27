@@ -40,9 +40,9 @@ module.exports = {
             for (let index = 0; index < timeStamps.length; index++) {
                 const timeStamp = timeStamps[index]
 
-                const text = timeStamp['text'].toLowerCase()
+                const text = timeStamp['text']
 
-                if (text.includes(inputValue)) {
+                if (text.toLowerCase().includes(inputValue)) {
                     videoInformations.push({
                         videoIndex: i,
                         createdAt: createdAt,
