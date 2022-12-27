@@ -102,7 +102,7 @@ module.exports = {
         const embed = new EmbedBuilder()
             .setColor(0x0099ff)
             .setTitle('Videos')
-            .setURL('https://discord.js.org/')
+            .setURL('https://content-searcher-beta-umbwiyhqiq-no.a.run.app/')
             .setDescription(videoTimeStamps)
 
         interaction
