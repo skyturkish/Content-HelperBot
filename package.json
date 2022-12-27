@@ -4,7 +4,7 @@
   "description": "\"video helper\"",
   "main": "index.js",
   "scripts": {
-    "update": "node deploy-commands.js && node index.js"
+    "deployrun": "node deploy-commands.js && node index.js"
   },
   "author": "",
   "license": "ISC",
