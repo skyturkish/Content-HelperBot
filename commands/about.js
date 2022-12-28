@@ -1,17 +1,11 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
+var links = require('../data/links.json')
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('about')
         .setDescription('Get info about the ContentHelper Bot'),
     async execute(interaction) {
-        const links = {
-            photo: 'https://64.media.tumblr.com/b7adc30458c015601d26467662b71ede/07cc1610225987ff-6c/s1280x1920/b29d6a1cc8e541404c330770f4c2d062d68b8c6b.jpg',
-            github: 'https://github.com/skyturkish/content-helper-bot',
-            youtube: 'https://www.youtube.com/@ArmaganAmcalar',
-            website: 'https://content-searcher-beta-umbwiyhqiq-no.a.run.app/',
-        }
-
         const exampleEmbed = new EmbedBuilder()
             .setColor(0x6b249c)
             .setAuthor({

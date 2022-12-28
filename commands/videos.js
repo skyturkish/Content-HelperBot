@@ -6,6 +6,7 @@ const {
 } = require('discord.js')
 
 var json = require('../data/videos.json')
+var links = require('../data/links.json')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -20,11 +21,6 @@ module.exports = {
         ),
 
     async execute(interaction) {
-        const links = {
-            photo: 'https://64.media.tumblr.com/b7adc30458c015601d26467662b71ede/07cc1610225987ff-6c/s1280x1920/b29d6a1cc8e541404c330770f4c2d062d68b8c6b.jpg',
-            website: 'https://content-searcher-beta-umbwiyhqiq-no.a.run.app/',
-        }
-
         const inputValue = interaction.options
             .getString('content')
             .toLowerCase()
