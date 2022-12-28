@@ -7,52 +7,44 @@ const {
 
 var json = require('../data/videos.json')
 
-const wait = require('node:timers/promises').setTimeout
-
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('videos')
-        .setDescription('Get information about the nimble')
+        .setDescription('Lists the related videos with the input word.')
         .addStringOption((option) =>
             option
                 .setName('content')
                 .setDescription('content aramanı sağlayacak kelimeyi yaz')
-                .setMinLength(3)
+                .setMinLength(2)
                 .setRequired(true)
         ),
 
     async execute(interaction) {
+        const links = {
+            photo: 'https://64.media.tumblr.com/b7adc30458c015601d26467662b71ede/07cc1610225987ff-6c/s1280x1920/b29d6a1cc8e541404c330770f4c2d062d68b8c6b.jpg',
+            website: 'https://content-searcher-beta-umbwiyhqiq-no.a.run.app/',
+        }
+
         const inputValue = interaction.options
             .getString('content')
             .toLowerCase()
 
         const videos = json['videos']
 
-        const videoInformations = []
+        let videoInformations = []
 
-        for (let i = 0; i < videos.length; i++) {
-            const video = videos[i]
-
-            const timeStamps = video['timeStamps']
-
-            const createdAt = video['createdAt']
-
-            for (let index = 0; index < timeStamps.length; index++) {
-                const timeStamp = timeStamps[index]
-
-                const text = timeStamp['text']
-
-                if (text.toLowerCase().includes(inputValue)) {
+        videos.forEach((video, videoIndex) => {
+            video.timeStamps.forEach((timeStamp, timeStampIndex) => {
+                if (timeStamp.text.toLowerCase().includes(inputValue)) {
                     videoInformations.push({
-                        videoIndex: i,
-                        createdAt: createdAt,
-                        videoTimeStampText: text,
-                        timeStampIndex: index,
+                        videoIndex: videoIndex,
+                        createdAt: video.createdAt,
+                        videoTimeStampText: timeStamp.text,
+                        timeStampIndex: timeStampIndex,
                     })
-                    break
                 }
-            }
-        }
+            })
+        })
 
         if (videoInformations.length == 0) {
             await interaction.reply({
@@ -62,60 +54,61 @@ module.exports = {
             return
         }
 
-        const row = new ActionRowBuilder().addComponents(
+        // ActionRowBuilder allows maximum of 25 option
+        videoInformations = videoInformations.slice(0, 25)
+
+        const selectMenu = new ActionRowBuilder().addComponents(
             new StringSelectMenuBuilder()
-                .setCustomId('videos')
+                .setCustomId('Videos')
                 .setPlaceholder('Nothing selected')
                 .addOptions(
-                    videoInformations
-                        .slice(0, 25)
-                        .map(function (currentvalue, index) {
-                            return {
-                                label: (index + 1).toString(),
-                                // value can carry only String
-                                value:
-                                    videoInformations[index][
-                                        'videoIndex'
-                                    ].toString() +
-                                    ':' +
-                                    videoInformations[index][
-                                        'timeStampIndex'
-                                    ].toString(),
-                            }
-                        })
+                    videoInformations.map(function (currentvalue, index) {
+                        return {
+                            label: (index + 1).toString(),
+                            // value can carry only String
+                            value:
+                                videoInformations[index][
+                                    'videoIndex'
+                                ].toString() +
+                                ':' +
+                                videoInformations[index][
+                                    'timeStampIndex'
+                                ].toString(),
+                        }
+                    })
                 )
         )
 
         let videoTimeStamps = ''
-
-        videoInformations.slice(0, 25).forEach((currentvalue, index) => {
-            const videoTimeStampText = currentvalue['videoTimeStampText']
-            const videoTimeStampCreatedAt = currentvalue['createdAt']
-
-            videoTimeStamps =
-                `${videoTimeStamps} ${index + 1} - ${videoTimeStampText} ` +
-                videoTimeStampCreatedAt +
-                '\n'
+        //  2 - Diyalektik zırva mıdır? Yazılım ile ilişkisini nasıl görüyorsunuz? 6 Oct 2022
+        //  .
+        //  .
+        //  9 - Almanya'da arkadaşlık kurmak zor mu? 17 Mar 2021
+        videoInformations.forEach((videoInformation, index) => {
+            videoTimeStamps = `${videoTimeStamps} ${index + 1} - ${
+                videoInformation.videoTimeStampText
+            } ${videoInformation.createdAt} \n`
         })
 
-        // change url with website has all video can be searched
-        const embed = new EmbedBuilder()
-            .setColor(0x0099ff)
+        const videosEmbed = new EmbedBuilder()
+            .setColor(0x6b249c)
             .setTitle('Videos')
-            .setURL('https://content-searcher-beta-umbwiyhqiq-no.a.run.app/')
+            .setURL(links.website)
+            .setDescription('Some description here')
             .setDescription(videoTimeStamps)
+            .setTimestamp()
+            .setFooter({
+                text: 'Created by skyturkish',
+                iconURL: links.photo,
+            })
 
         interaction
             .reply({
-                embeds: [embed],
+                embeds: [videosEmbed],
                 ephemeral: true,
-                components: [row],
+                components: [selectMenu],
             })
             .then(() => console.log('Reply sent.'))
             .catch(console.error)
-
-        await wait(60000)
-
-        interaction.deleteReply().then(console.log).catch(console.error)
     },
 }
