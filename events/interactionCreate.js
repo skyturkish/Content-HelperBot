@@ -1,5 +1,7 @@
 const { Events } = require('discord.js')
 
+var prepareYoutubeLink = require('../functions/prepareYoutubeLink.js')
+
 module.exports = {
     name: Events.InteractionCreate,
     async execute(interaction) {
@@ -20,12 +22,12 @@ module.exports = {
                 console.error(error)
             }
         } else if (interaction.isStringSelectMenu()) {
-            if (interaction.customId === 'videos') {
-                const secondInformation = interaction.values[0]
+            if (interaction.customId === 'Videos') {
+                const VideoAndTimeInfo = interaction.values[0]
 
-                interaction.client.commands
-                    .get('youtubeurl')
-                    .execute(interaction, secondInformation)
+                const youtubeLink = await prepareYoutubeLink(VideoAndTimeInfo)
+
+                await interaction.reply(youtubeLink)
             }
         }
     },
