@@ -90,7 +90,6 @@ module.exports = {
             .setColor(0x6b249c)
             .setTitle('Videos')
             .setURL(links.website)
-            .setDescription('Some description here')
             .setDescription(videoTimeStamps)
             .setTimestamp()
             .setFooter({
