@@ -45,7 +45,6 @@ module.exports = {
         interaction
             .reply({
                 embeds: [exampleEmbed],
-                ephemeral: true,
             })
             .then(() => console.log('/about Reply sent.'))
             .catch(console.error)
