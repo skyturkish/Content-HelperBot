@@ -8,7 +8,7 @@ A DiscordJS Bot that offers you timestamps based on the given word and allows yo
 
 The owner of all videos and data is Armağan Amcalar. [youtube channel](https://www.youtube.com/@ArmaganAmcalar)
 
-A website Which allows you to search more widely and freely between videos. [Website](https://content-searcher-beta-umbwiyhqiq-no.a.run.app/)
+A website Which allows you to search more widely and freely between videos. [Website](https://content-searcher-web-mzpkjcsura-no.a.run.app/)
 
 [Invite link](https://discord.com/api/oauth2/authorize?client_id=1049446797455675494&permissions=2147485696&scope=bot)
 
